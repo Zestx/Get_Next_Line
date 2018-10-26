@@ -1,0 +1,24 @@
+// EVERYTHING :D //
+
+Process:
+
+- Read from file descriptor:
+	- Check for errors:
+		- Is it a valid file (Is the file descritor a positive number)?
+		- Is the buffer sent in parameters valid?
+	- Using a loop, read characters by characters (since we don't know the actual length of the 'line')
+		- We'll use a linked list to stock the characters 
+		  (for the same reason as above as we read chars by chars: we can't allocate memory for the full line since we don't know its length.)
+		- The loop (reading) stops when there's either a '\n' or if we're at the end of file.
+	- Transfer the characters in the list into the buffer sent in parameters.
+		- Count the number of nodes in the list to know the size to allocate to the buffer.
+		- Allocate the buffer using malloc and don't forget to protect it.
+		- Copy the characters in the list into the buffer.
+		- Don't forget to free the list after that!
+
+Eventual Problems:
+- What happen if the buffer size if modified in defense? (I don't see why it should be modified btw..)
+	- Check if the buffer size is not too big?
+		- If then, reduced it? (meh.)
+		- Or leave the program with an error? (almost as meh.)
+
