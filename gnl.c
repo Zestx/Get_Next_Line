@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 21:00:43 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/11/05 17:38:41 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/11/05 20:55:22 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,19 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	char *tmp;
+	size_t rdd;
+	char *buffer[BUFF_SIZE + 1]
+	char *tmp[BUFF_SIZE + 1]
+	char *point;
+	static char *postline;
 
-	if (!line || fd < 0)
-		return (-1);
-	if (!(tmp = malloc(BUFF_SIZE + 1)) || !(*line = malloc(BUFF_SIZE + 1)))
-			return (-1);
-	while (strchr(tmp, '\n'))
+	*buffer = '\0';
+	while (rdd = read(fd, tmp, BUFF_SIZE) > 0 && !(point = ft_strchr(tmp, '\n')))
 	{
-		read(1, tmp, BUFF_SIZE);
+		tmp[rdd] = '\0';
+		buffer = ft_strjoin(buffer, tmp);
+		strncpy(postline, point, rdd);
 	}
-	strcpy(*line, tmp);
 	return (1);
 }
 
