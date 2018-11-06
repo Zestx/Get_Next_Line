@@ -27,3 +27,41 @@ Dans ce que tu viens de lire tu recherche un "\n" si tu en trouves un tu copie d
 Lors de l'appel suivant de get_next_line tu vérifier dans ta variable statique si tu as encore un \n, si oui tu copie depuis le début  de cette variable jusqu'au \n que tu remplace par "\0". etc...
 quand tu n'as plus de "\n" dans ta variable statique, tu relis dans le fichier de la taille du BUFFER_SIZE, et tu recherche de nouveau un "\n" dedans, si tu en troues un tu concaténe ta variable statique avec la partie qui précède le "\n" de ton buffer. tu stocke le résultats de la concaténation dans la variable *line qu'on te passe en paramètre et tu stocke le reste du buffer dans ta variable statique.
 Une fois atteint la fin du fichier tu dois vérifier si il te reste des données dans ta variable statique tu les copie dans la variable *line et renvois 0, pour signaler que la lecture et terminer et que tu n'as plus de ligne à renvoyer.
+
+============================================================================================
+
+1. Check for error:
+	- Is the file descriptor (fd) valid?
+	- Is **line valid (non-null)?
+
+2. Create a buffer to stock what is read from the fd (rd_buffer) 
+   and a buffer to stock the line (ln_buffer).
+
+3. Read from the file descriptor into rd_buffer
+
+4. Append the content of the rd_buffer into the ln_buffer until you've read a \n.
+
+5. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
