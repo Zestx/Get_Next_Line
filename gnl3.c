@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 16:33:17 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/11/07 17:48:24 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/11/07 19:10:36 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,45 +19,38 @@
 #include "header.h"
 #include "libft.h"
 
-//This function read blocks of BUFF_SIZE characters from fd until it has read a SEPARATOR ('\n') or hits EOF.
-//The characters left after the SEPARATOR in the rd_buffer are placed in the 'overflow' static string.
-//THE LEFTOVER MUST BE >>AFTER<< THE LOOP! (if there's a leftover in the rd_buffer, the loop isnt executed...)
-char*	read_until(const int fd, char *leftover)
+char	*read_until(const int fd, char **leftover)
 {
-	char *rd_buffer;
-	char *ln_buffer;
-	size_t ret;
-	char *chr;
+	char	*rd_buffer;
+	char	*ln_buffer;
+	size_t	ret;
+	char	*chr;
 
 	rd_buffer = ft_strnew(BUFF_SIZE);
 	ln_buffer = ft_strnew(0);
 	chr = NULL;
-	while((ret = read(fd, rd_buffer, BUFF_SIZE)) > 0 && !ft_strchr(rd_buffer, SEPARATOR))
+	while ((ret = read(fd, rd_buffer, BUFF_SIZE)) > 0
+			&& !ft_strchr(rd_buffer, SEPARATOR))
 	{
 		rd_buffer[ret] = '\0';
 		ln_buffer = ft_strjoin(ln_buffer, rd_buffer);
-		if ((chr = ft_strchr(ln_buffer, SEPARATOR)))
-		{
-			if (ret > 1)
-				leftover = ft_strdup(chr);
-			*chr = '\0';
-		}
-		printf("rd buffer: %s\n", rd_buffer);
 	}
-	printf("LEFTOVER: %s\n", leftover);
-	ln_buffer = ft_strjoin(ln_buffer, rd_buffer);
-	if ((ft_strchr(ln_buffer, SEPARATOR)))
-		*(ft_strchr(ln_buffer, SEPARATOR)) = '\0';
-	printf("%s\n", ln_buffer);
+	if (ret > 0)
+		ln_buffer = ft_strjoin(ln_buffer, rd_buffer);
+	if ((chr = ft_strchr(ln_buffer, SEPARATOR)))
+	{
+		if (ret > 1)
+			*leftover = ft_strdup(chr + 1);
+		*chr = '\0';
+	}
 	return (ln_buffer);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	char *lo_chr;
-	char *buffer;
-	static char *leftover;
-	static int count;
+	char		*lo_chr;
+	char		*buffer;
+	static char	*leftover;
 
 	if (!fd || !line)
 		return (-1);
@@ -65,30 +58,36 @@ int		get_next_line(const int fd, char **line)
 	if (leftover)
 	{
 		buffer = ft_strjoin(buffer, leftover);
-		if ((lo_chr = strchr(leftover, SEPARATOR)))
+		if ((lo_chr = strchr(buffer, SEPARATOR)))
 		{
 			leftover = ft_strdup(lo_chr + 1);
 			*lo_chr = '\0';
+			*line = buffer;
 			return (1);
 		}
 		else
-			bzero(leftover, ft_strlen(leftover));
+			ft_bzero(leftover, ft_strlen(leftover));
 	}
-	buffer = ft_strjoin(buffer, read_until(fd, leftover));
-	printf("%d. %s\n", count, buffer);
-	count++;
+	buffer = ft_strjoin(buffer, read_until(fd, &leftover));
+	*line = buffer;
 	return (1);
 }
 
 int		main(void)
 {
-	int fd;
-	char *line;
+	int		fd;
+	char	*line;
 
 	fd = open("test", O_RDONLY);
 	get_next_line(fd, &line);
+	printf("> %s ||\n", line);
 	get_next_line(fd, &line);
+	printf("> %s ||\n", line);
 	get_next_line(fd, &line);
+	printf("> %s ||\n", line);
 	get_next_line(fd, &line);
+	printf("> %s ||\n", line);
+	get_next_line(fd, &line);
+	printf("> %s ||\n", line);
 	return (0);
 }
