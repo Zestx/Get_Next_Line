@@ -6,18 +6,11 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 20:00:19 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/11/08 18:40:47 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/11/08 21:01:04 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
-#include "header.h"
-#include "libft.h"
+#include "get_next_line.h"
 
 char	*read_until(const int fd, char **leftover)
 {
@@ -53,7 +46,8 @@ int		get_next_line(const int fd, char **line)
 	static char	*leftover;
 	char		*lo_chr;
 
-	if (!fd || !line || BUFF_SIZE < 1)
+	buffer = NULL;
+	if (fd < 0 || !line || BUFF_SIZE < 1 || read (fd,buffer,0) ==  -1)
 		return (-1);
 	buffer = ft_strnew(0);
 	if (leftover)
@@ -74,42 +68,4 @@ int		get_next_line(const int fd, char **line)
 	if (!ft_strlen(*line))
 		return (0);
 	return (1);
-}
-
-int		main(void)
-{
-	int		fd;
-	char	*line;
-	int		ret = 1;
-
-	while (true)
-	{
-		fd = open("test", O_RDONLY);
-		while (ret == 1)
-		{
-			ret = get_next_line(fd, &line);
-			printf("%d.>>%s<<\n", ret, line);
-		}
-		close(fd);
-	}
-	/*ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);
-	ret = get_next_line(fd, &line);
-	printf("%d.>>%s<<\n", ret, line);*/
-	
-	return (0);
 }

@@ -6,9 +6,15 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 19:41:42 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/11/08 16:11:23 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/11/08 21:00:38 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include "./Libft/libft.h"
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
