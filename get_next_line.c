@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 20:00:19 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/11/08 21:01:04 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/11/19 19:42:30 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,26 @@ char	*read_until(const int fd, char **leftover)
 int		get_next_line(const int fd, char **line)
 {
 	char		*buffer;
-	static char	*leftover;
+	static char	*leftover[10000];
 	char		*lo_chr;
 
-	buffer = NULL;
-	if (fd < 0 || !line || BUFF_SIZE < 1 || read (fd,buffer,0) ==  -1)
+	if (fd < 0 || !line || BUFF_SIZE < 1 || read(fd, *line, 0) ==  -1)
 		return (-1);
 	buffer = ft_strnew(0);
-	if (leftover)
+	if (leftover[fd])
 	{
-		buffer = ft_strjoin(buffer, leftover);
+		buffer = ft_strjoin(buffer, leftover[fd]);
 		if ((lo_chr = ft_strchr(buffer, SPR)))
 		{
-			leftover = ft_strdup(lo_chr + 1);
+			leftover[fd] = ft_strdup(lo_chr + 1);
 			*lo_chr = '\0';
 			*line = buffer;
 			return (1);
 		}
 		else
-			free(leftover);
+			free(leftover[fd]);
 	}
-	buffer = ft_strjoin(buffer, read_until(fd, &leftover));
+	buffer = ft_strjoin(buffer, read_until(fd, &leftover[fd]));
 	*line = buffer;
 	if (!ft_strlen(*line))
 		return (0);
