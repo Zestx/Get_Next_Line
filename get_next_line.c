@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 20:00:19 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/11/19 19:42:30 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/11/21 20:58:09 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		get_next_line(const int fd, char **line)
 	static char	*leftover[10000];
 	char		*lo_chr;
 
-	if (fd < 0 || !line || BUFF_SIZE < 1 || read(fd, *line, 0) ==  -1)
+	if (fd < 0 || !line || BUFF_SIZE < 1 || read(fd, *line, 0) == -1)
 		return (-1);
 	buffer = ft_strnew(0);
 	if (leftover[fd])
